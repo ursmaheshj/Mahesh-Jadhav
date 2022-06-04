@@ -40,6 +40,4 @@ http://www.owlcarousel.owlgraphic.com/
 EasyPieChart
 https://github.com/rendro/easy-pie-chart
 
-Demo Images:
-http://unsplash.com
 
