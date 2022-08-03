@@ -628,12 +628,13 @@
 	</div>
 
 	<div id="fh5co-consult">
-		<div class="video fh5co-video" style="background-image: url(images/cover_bg_1.jpg);">
+		<div class="video fh5co-video" style="background-image: url();">
 			<div class="overlay"></div>
 		</div>
 		<div class="choose animate-box">
 			<h2>Contact me...</h2>
 			<form>
+				<fieldset>
 				<div class="row form-group">
 					<div class="col-md-6">
 						<input type="text" id="name" class="form-control" placeholder="Your name">
@@ -660,7 +661,7 @@
 				<div class="form-group">
 					<input type="submit" value="Send Message" class="btn btn-primary">
 				</div>
-
+			</fieldset>
 			</form>	
 		</div>
 	</div>
@@ -680,36 +681,6 @@
 		<a href="#" class="js-gotop"><ion-icon style="color:white;height: 40px;width: 40px;" name="arrow-up-outline"></ion-icon></a>
 	</div>
 
-	<script>
-		const url='https://contactme2899.herokuapp.com/contacts/';
-		const formEl=document.querySelector('form');
-		formEl.addEventListener("submit",async (e)=>{
-			e.preventDefault();
-			const formData = new FormData(formEl);
-			const formDataSerialized = Object.fromEntries(formData);
-			console.log(formDataSerialized,"formDataSerialized")
-			const jsonObject = {
-          ...formDataSerialized,
-          sendToSelf: formDataSerialized.sendToSelf ? true : false,
-        };
-			try {
-          const response = await fetch(url, {
-            method: "POST",
-            body: JSON.stringify(jsonObject),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          const json = await response.json();
-          console.log(json);
-        } catch (e) {
-          console.error(e);
-          alert("there iss an error");
-        }
-		});
-
-
-	</script>
 	
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
@@ -723,7 +694,8 @@
 	<script src="js/jquery.stellar.min.js"></script>
 	<!-- Easy PieChart -->
 	<script src="js/jquery.easypiechart.min.js"></script>
-	
+	<!-- Easy PieChart -->
+	<script src="js/apicall.js"></script>
 	<!-- Main -->
 	<script src="js/main.js"></script>
 
