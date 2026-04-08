@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Projects — automation, data engineering, and more.">
+  <title>Mahesh | Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Noto+Sans:wght@400;500;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────────────────── -->
+  <header class="navbar" role="banner">
+    <div class="navbar__inner">
+      <a class="navbar__brand" id="brand-name" href="index.html">Mahesh</a>
+      <nav aria-label="Primary navigation">
+        <ul id="nav-links" class="navbar__links" role="list"></ul>
+      </nav>
+      <div class="navbar__controls">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" type="button">
+          <i class="fa-solid fa-sun" aria-hidden="true"></i>
+        </button>
+        <button class="navbar__hamburger" id="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false" type="button">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-hero reveal">
+      <h1 class="page-title">Projects</h1>
+      <p class="page-desc">Selected work spanning automation, data engineering, and frontend systems.</p>
+    </div>
+
+    <div id="project-filters" class="filter-bar" role="tablist" aria-label="Filter by technology"></div>
+    <div id="project-grid" class="project-grid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="footer-year"></span> <span id="footer-name"></span>. Edit content in <code>content.js</code>.</p>
+  </footer>
+
+  <script src="js/content.js"></script>
+  <script src="js/shared.js"></script>
+  <script>
+    const projectState = { filter: "All" };
+
+    function getProjectStacks() {
+      const allStacks = new Set();
+      data.projects.forEach((p) => p.stack.forEach((s) => allStacks.add(s)));
+      return ["All", ...Array.from(allStacks).sort()];
+    }
+
+    function renderProjectFilters() {
+      document.getElementById("project-filters").innerHTML = getProjectStacks()
+        .map(
+          (stack) =>
+            `<button class="filter-pill${stack === projectState.filter ? " is-active" : ""}" data-project-filter="${stack}" type="button">${stack}</button>`
+        )
+        .join("");
+    }
+
+    function renderProjects() {
+      const filtered =
+        projectState.filter === "All"
+          ? data.projects
+          : data.projects.filter((p) => p.stack.includes(projectState.filter));
+
+      document.getElementById("project-grid").innerHTML = filtered
+        .map(
+          (project) => `
+            <article class="project-card reveal">
+              <h3 class="project-card__title">${project.title}</h3>
+              ${project.image ? `<img src="${project.image}" alt="${project.title}" class="project-card__image">` : ""}
+              <span class="project-card__year">${project.year}</span>
+              <p class="project-card__summary">${project.summary}</p>
+              <div class="project-card__stack">
+                ${project.stack.map((s) => `<span class="tag">${s}</span>`).join("")}
+              </div>
+              <div class="project-card__links">
+                ${project.links.map((l) => `<a class="btn btn-outline" href="${l.url}"><i class="fa-solid fa-arrow-up-right-from-square fa-sm" aria-hidden="true"></i> ${l.label}</a>`).join("")}
+              </div>
+            </article>`
+        )
+        .join("");
+      setupReveal();
+    }
+
+    document.addEventListener("click", (e) => {
+      const pf = e.target.closest("[data-project-filter]");
+      if (pf) {
+        projectState.filter = pf.dataset.projectFilter;
+        renderProjectFilters();
+        renderProjects();
+      }
+    });
+
+    initPage("Projects");
+    renderProjectFilters();
+    renderProjects();
+    setupReveal();
+  </script>
+</body>
+</html>
